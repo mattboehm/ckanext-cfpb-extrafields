@@ -20,7 +20,8 @@ setup(
     zip_safe=False,
     install_requires=[
         # -*- Extra requirements: -*-
-        "ckanapi"
+        "ckanapi",
+        "openpyxl"
     ],
     entry_points='''
         [ckan.plugins]
