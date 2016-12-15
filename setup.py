@@ -27,6 +27,6 @@ setup(
         # Add plugins here, e.g.
         ckanext_cfpb_extrafields=ckanext.cfpb_extrafields.plugin:ExampleIDatasetFormPlugin
         ckanext_cfpb_export=ckanext.cfpb_extrafields.plugin:ExportPlugin
-        ckanext_cfpb_import=ckanext.cfpb_extrafields.plugin:ImportPlugin
+        ckanext_cfpb_import=ckanext.cfpb_extrafields.plugin:DigImportPlugin
     ''',
 )
