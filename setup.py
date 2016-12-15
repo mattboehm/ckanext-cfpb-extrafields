@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import sys, os
 
 version = '0.0.1'
 
@@ -28,5 +27,6 @@ setup(
         # Add plugins here, e.g.
         ckanext_cfpb_extrafields=ckanext.cfpb_extrafields.plugin:ExampleIDatasetFormPlugin
         ckanext_cfpb_export=ckanext.cfpb_extrafields.plugin:ExportPlugin
+        ckanext_cfpb_import=ckanext.cfpb_extrafields.plugin:ImportPlugin
     ''',
 )

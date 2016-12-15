@@ -1,0 +1,10 @@
+{% extends "page.html" %}
+
+{% block primary_content %}
+	<h2>Import Dig</h2>
+	Upload a dig file to automatically ingest it into the system
+	<form action="/import/upload" method="post">
+		<input type="file"/>
+		<input type="submit" class="submit" value="" name="Submit">
+	</form>
+{% endblock %}
