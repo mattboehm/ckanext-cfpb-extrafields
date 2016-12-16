@@ -10,16 +10,13 @@ import ckanapi
 
 from ckanext.cfpb_extrafields.digutils import make_rec
 
-# def get_datasets(rows=10000):
-    # api = ckanapi.LocalCKAN()
-    # result = api.call_action(
-        # "package_search",
-        # {
-            # "q": "",
-            # "rows": rows,
-        # }
-    # )
-    # return result
+def upload_rec(rec):
+    api = ckanapi.LocalCKAN()
+    result = api.call_action(
+        "package_new",
+        rec
+    )
+    return result
 
 class ImportController(BaseController):
     def index(self, group):
@@ -37,4 +34,8 @@ class ImportController(BaseController):
         rec, errors = make_rec(dig)
         if errors:
             redirect_to("import_page", errors=json.dumps(errors), group=group)
+        else:
+            rec["owner_org"] = group
+            upload_rec(rec)
+            import logging;logging.error(repr(rec))
         return json.dumps(rec)
