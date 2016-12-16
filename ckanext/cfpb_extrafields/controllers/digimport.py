@@ -13,7 +13,7 @@ from ckanext.cfpb_extrafields.digutils import make_rec
 def upload_rec(rec):
     api = ckanapi.LocalCKAN()
     result = api.call_action(
-        "package_new",
+        "package_create",
         rec
     )
     return result
