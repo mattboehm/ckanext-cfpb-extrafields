@@ -33,7 +33,8 @@ class ImportController(BaseController):
 
     def upload(self):
         dig = request.POST["file"].file
+        group = request.POST["group"]
         rec, errors = make_rec(dig)
         if errors:
-            redirect_to("import_page", errors=json.dumps(errors))
+            redirect_to("import_page", errors=json.dumps(errors), group=group)
         return json.dumps(rec)
