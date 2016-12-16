@@ -18,7 +18,7 @@
 				font-weight: normal;
 				margin-left: 28px;
 				margin-top: 10px;
-				margin-bottom: 10px;
+				margin-bottom: 2px;
 			}
 		</style>
 		<div class="errors">
@@ -30,9 +30,9 @@
 			</ul>
 		</div>
 	{% endif %}
-	<h2>Import DIG</h2>
+	<h2 style="margin-top: 10px">Import DIG</h2>
 	<span style="color:#888;font-style:italic">Upload a DIG file to automatically ingest it into the system</span>
-	<form action="/import/upload" enctype="multipart/form-data" method="post" class="form-inline" style="padding-top:20px">
+	<form action="/import/upload" enctype="multipart/form-data" method="post" class="form-inline" style="padding-top:20px;padding-bottom:20px">
 		<div class="form-group" style="margin-left: 5px">
 			<label for="file" style="font-weight:bold">DIG file</label>
 			<input type="file" id="file" name="file" accept=".xls,.xlsx,.xlsm" style="line-height: 10px; vertical-align: top">
