@@ -14,7 +14,8 @@ def concat(fields):
 def date(cell):
     def get_date(ws):
         val = ws[cell].value
-        return v.reasonable_date_validator(val)
+        _ = v.reasonable_date_validator(val)#Make sure it's a valid date, but return the string.
+        return val
     return get_date
 
 """Maps field name to either a cell or a function that's passed the worksheet and should return the value"""
@@ -24,12 +25,12 @@ FIELDS = {
     "contact_secondary_name": "B6",
     "data_source_names": "D10",
     "dataset_notes": "B54",
-    "dig_id": "B5",
+    "dig_id": lambda ws: v.dig_id_validator(ws["B5"].value),
     "initial_purpose_for_intake": "H15",
     "legal_authority_for_collection": "B25",
     "notes": "H4",
     "pra_exclusion": concat(["D38", "B39"]),
-    "pra_omb_control_number": "F37",
+    "pra_omb_control_number": lambda ws: v.pra_control_num_validator(ws["F37"].value),
     "pra_omb_expiration_date": date("F38"),
     "privacy_contains_pii": "B29",
     "privacy_has_direct_identifiers": "B30",
