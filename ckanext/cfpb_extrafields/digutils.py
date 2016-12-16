@@ -66,7 +66,7 @@ def make_rec(excel_file):
         try:
             result[field] = get_field(ws, field)
         except Invalid as  err:
-            errors.append(field + ": " + err.message)
+            errors.append(field + ": " + err.error)
     #TODO add name, owner_org?
     #TODO add validators?
     return result, errors
