@@ -1,4 +1,7 @@
 from openpyxl import load_workbook
+from ckan.plugins.toolkit import Invalid
+
+from ckanext.cfpb_extrafields import validators as v
 
 def concat(fields):
     def concat_fields(ws):
@@ -7,6 +10,11 @@ def concat(fields):
             result += ws[field].value or ""
         return result
     return concat_fields
+
+def date(cell):
+    def get_date(ws):
+        val = ws[cell].value
+        return v.reasonable_date_validator(val)
 
 """Maps field name to either a cell or a function that's passed the worksheet and should return the value"""
 FIELDS = {
@@ -21,7 +29,7 @@ FIELDS = {
     "notes": "H4",
     "pra_exclusion": concat(["D38", "B39"]),
     "pra_omb_control_number": "F37",
-    "pra_omb_expiration_date": "F38",
+    "pra_omb_expiration_date": date("F38"),
     "privacy_contains_pii": "B29",
     "privacy_has_direct_identifiers": "B30",
     "privacy_has_privacy_act_statement": "D30",
@@ -51,7 +59,13 @@ def get_field(worksheet, field, fields=FIELDS):
 def make_rec(excel_file):
     wb = load_workbook(excel_file, read_only=True)
     ws = wb.worksheets[0]
-    result = {field: get_field(ws, field) for field in FIELDS}
+    result = {}
+    errors = []
+    for field in FIELDS:
+        try:
+            result[field] = get_field(ws, field)
+        except Invalid as  err:
+            errors.append(field + ": " + err.message)
     #TODO add name, owner_org?
     #TODO add validators?
-    return result
+    return result, errors

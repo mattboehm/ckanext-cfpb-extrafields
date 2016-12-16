@@ -3,8 +3,9 @@ try:
 except ImportError:
     from stringIO import StringIO
 import json
+import urllib
 
-from ckan.plugins.toolkit import BaseController, render, request, response
+from ckan.plugins.toolkit import BaseController, redirect_to, render, request, response
 import ckanapi
 
 from ckanext.cfpb_extrafields.digutils import make_rec
@@ -22,10 +23,17 @@ from ckanext.cfpb_extrafields.digutils import make_rec
 
 class ImportController(BaseController):
     def index(self):
-        return render('ckanext/cfpb-extrafields/import_index.html')
+        errors = request.params.get("errors", [])
+        if errors:
+            try:
+                errors = json.loads(errors)
+            except json.JSONDecodeError:
+                errors = ["Unknown errors detected"]
+        return render('ckanext/cfpb-extrafields/import_index.html', {"errors": errors})
 
     def upload(self):
-        dig = request.POST["file"]
-        rec = make_rec(dig)
-
+        dig = request.POST["file"].file
+        rec, errors = make_rec(dig)
+        if errors:
+            redirect_to("import_page", errors=json.dumps(errors))
         return json.dumps(rec)
