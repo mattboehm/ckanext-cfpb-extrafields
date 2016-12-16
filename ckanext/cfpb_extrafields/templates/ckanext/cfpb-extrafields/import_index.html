@@ -5,6 +5,7 @@
 		<style type="text/css">
 			.errors {
 				color: red;
+				font-weight: bold;
 				padding-top: 10px;
 				border: 2px solid red;
 				padding-left: 10px;
@@ -13,12 +14,20 @@
 				margin-right: 17px;
 				margin-bottom: 17px;
 			}
+			.error-list {
+				font-weight: normal;
+				margin-left: 28px;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
 		</style>
 		<div class="errors">
 			Import failed. Please fix the following errors and re-upload:
-			{% for err in errors %}
-				<div>{{err}}</div>
-			{% endfor %}
+			<ul class="error-list">
+				{% for err in errors %}
+					<li>{{err}}</li>
+				{% endfor %}
+			</ul>
 		</div>
 	{% endif %}
 	<h2>Import DIG</h2>
