@@ -15,6 +15,7 @@ def date(cell):
     def get_date(ws):
         val = ws[cell].value
         return v.reasonable_date_validator(val)
+    return get_date
 
 """Maps field name to either a cell or a function that's passed the worksheet and should return the value"""
 FIELDS = {
