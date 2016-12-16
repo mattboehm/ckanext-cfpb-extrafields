@@ -7,7 +7,7 @@ def concat(fields):
     def concat_fields(ws):
         result = ""
         for field in fields:
-            result += ws[field].value or ""
+            result += ws[field].internal_value or ""
         return result
     return concat_fields
 
@@ -27,12 +27,12 @@ FIELDS = {
     "contact_secondary_name": "B6",
     "data_source_names": "D10",
     "dataset_notes": "B54",
-    "dig_id": lambda ws: v.dig_id_validator(ws["B5"].value or ""),
+    "dig_id": lambda ws: v.dig_id_validator(ws["B5"].internal_value or ""),
     "initial_purpose_for_intake": "H15",
     "legal_authority_for_collection": "B25",
     "notes": "H4",
     "pra_exclusion": concat(["D38", "B39"]),
-    "pra_omb_control_number": lambda ws: v.pra_control_num_validator(ws["F37"].value or ""),
+    "pra_omb_control_number": lambda ws: v.pra_control_num_validator(ws["F37"].internal_value or ""),
     "pra_omb_expiration_date": date("F38"),
     "privacy_contains_pii": "B29",
     "privacy_has_direct_identifiers": "B30",
