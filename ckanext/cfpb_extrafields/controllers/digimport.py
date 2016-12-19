@@ -3,12 +3,16 @@ try:
 except ImportError:
     from stringIO import StringIO
 import json
+import re
 import urllib
 
 from ckan.plugins.toolkit import BaseController, redirect_to, render, request, response
 import ckanapi
 
 from ckanext.cfpb_extrafields.digutils import make_rec
+
+def make_name(title):
+    return re.sub(r"[^a-zA-Z0-9]*", "-", title)
 
 def upload_rec(rec):
     api = ckanapi.LocalCKAN()
@@ -36,6 +40,7 @@ class ImportController(BaseController):
             redirect_to("import_page", errors=json.dumps(errors), group=group)
         else:
             rec["owner_org"] = group
+            rec["name"] = make_name(rec["title"])
             upload_rec(rec)
             import logging;logging.error(repr(rec))
         return json.dumps(rec)
