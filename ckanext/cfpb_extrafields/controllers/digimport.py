@@ -12,7 +12,7 @@ import ckanapi
 from ckanext.cfpb_extrafields.digutils import make_rec
 
 def make_name(title):
-    return re.sub(r"[^a-zA-Z0-9]*", "-", title)
+    return re.sub(r"[^a-zA-Z0-9]*", "-", title).lower()
 
 def upload_rec(rec):
     api = ckanapi.LocalCKAN()
@@ -41,6 +41,7 @@ class ImportController(BaseController):
         else:
             rec["owner_org"] = group
             rec["name"] = make_name(rec["title"])
+            rec["notes"] = ""
             upload_rec(rec)
             import logging;logging.error(repr(rec))
         return json.dumps(rec)
