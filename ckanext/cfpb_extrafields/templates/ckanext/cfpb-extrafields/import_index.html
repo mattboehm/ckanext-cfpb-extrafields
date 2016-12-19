@@ -1,7 +1,7 @@
 {% extends "page.html" %}
 
 {% block secondary_content %}
-	<a href="/organization/{{group}}" class="btn btn-primary">&larr;Back to Organization</a>
+	<a href="/organization/{{group}}" class="btn btn-primary" style="display:block;margin:10px">&larr; Back to Organization</a>
 {% endblock %}
 {% block primary_content %}
 	{% if errors %}
@@ -42,13 +42,13 @@
 		</div>
 		<div class="form-group">
 			<label>Dataset Name (only use a-z and -)</label>
-			<input type="text" id="ds_name" class="text" value="" name="name" placeholder="Defaults to Title field" required>
+			<input type="text" id="ds_name" class="text" value="" name="name" placeholder='Defaults to "Title" field'>
 		</div>
 		<div class="form-group">
 			<label>Description</label>
-			<input type="text" id="ds_notes" class="text" value="" name="notes" required>
+			<textarea id="ds_notes" value="" name="notes" rows="5" style="width: 80%" required>
 		</div>
 		<input type="hidden" name="group" value="{{group}}">
-		<button type="submit" class="btn btn-default">Submit</button>
+		<button type="submit" class="btn btn-primary" style="margin-top:10px">Submit</button>
 	</form>
 {% endblock %}
