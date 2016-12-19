@@ -4,29 +4,29 @@
 	<a href="/organization/{{group}}" class="btn btn-primary" style="display:block;margin:10px">&larr; Back to Organization</a>
 {% endblock %}
 {% block primary_content %}
+	<style type="text/css">
+		#import-form label {
+			font-size: 16px;
+		}
+		.errors {
+			color: red;
+			font-weight: bold;
+			padding-top: 10px;
+			border: 2px solid red;
+			padding-left: 10px;
+			margin-top: 17px;
+			padding-bottom: 10px;
+			margin-right: 17px;
+			margin-bottom: 17px;
+		}
+		.error-list {
+			font-weight: normal;
+			margin-left: 28px;
+			margin-top: 10px;
+			margin-bottom: 2px;
+		}
+	</style>
 	{% if errors %}
-		<style type="text/css">
-			#import-form label {
-				font-size: 16px;
-			}
-			.errors {
-				color: red;
-				font-weight: bold;
-				padding-top: 10px;
-				border: 2px solid red;
-				padding-left: 10px;
-				margin-top: 17px;
-				padding-bottom: 10px;
-				margin-right: 17px;
-				margin-bottom: 17px;
-			}
-			.error-list {
-				font-weight: normal;
-				margin-left: 28px;
-				margin-top: 10px;
-				margin-bottom: 2px;
-			}
-		</style>
 		<div class="errors">
 			Import failed. Please fix the following errors and re-upload:
 			<ul class="error-list">
