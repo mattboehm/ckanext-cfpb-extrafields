@@ -1,7 +1,9 @@
 {% extends "page.html" %}
 
-{% block primary_content %}
+{% block secondary_content %}
 	<a href="/organization/{{group}}" class="btn btn-primary">&larr;Back to Organization</a>
+{% endblock %}
+{% block primary_content %}
 	{% if errors %}
 		<style type="text/css">
 			.errors {
@@ -37,8 +39,16 @@
 		<div class="form-group" style="margin-left: 5px">
 			<label for="file" style="font-weight:bold">DIG file</label>
 			<input type="file" id="file" name="file" accept=".xls,.xlsx,.xlsm" style="line-height: 10px; vertical-align: top">
-			<input type="hidden" name="group" value="{{group}}">
 		</div>
+		<div class="form-group">
+			<label>Dataset Name (only use a-z and -)</label>
+			<input type="text" id="ds_name" class="text" value="" name="name" placeholder="Defaults to Title field" required>
+		</div>
+		<div class="form-group">
+			<label>Description</label>
+			<input type="text" id="ds_notes" class="text" value="" name="notes" required>
+		</div>
+		<input type="hidden" name="group" value="{{group}}">
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>
 {% endblock %}
