@@ -41,7 +41,7 @@ class ImportController(BaseController):
         else:
             rec["owner_org"] = group
             rec["name"] = make_name(rec["title"])
-            rec["notes"] = ""
+            rec["notes"] = "Automatically import from DIG"
             upload_rec(rec)
             import logging;logging.error(repr(rec))
         return json.dumps(rec)
