@@ -146,10 +146,6 @@
               </tr>
               {% endif %}
               <tr>
-                <th scope="row">{{ _('metadata resource ID') }}</th>
-                <td>{{ res.id or _('unknown') }}</td>
-              </tr>
-              <tr>
                 <th scope="row">{{ _('metadata resource created') }}</th>
                 <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
               </tr>
@@ -348,5 +344,7 @@ function example_code_snippet(items) {
     </div>
   </div>
 </section>
+
+<div class="resource-id">Metadata Resource ID: {{ res.id or _('unknown') }}</div>
 {% endblock %}
 {% endblock %}
