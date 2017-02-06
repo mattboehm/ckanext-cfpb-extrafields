@@ -4,7 +4,9 @@ import ckan.plugins.toolkit as tk
 import validators as v
 import options as opts
 import datastore_actions as ds
+
 import collections
+import logging
 
 # if tag usage is going to be expanded, the following should be generalized.
 def create_relevant_governing_documents():
@@ -532,6 +534,7 @@ class SSOPlugin(p.SingletonPlugin):
     def identify(self):
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
         username = tk.request.headers.get(header_name)
+        logging.error("$#$#$#$#$#$#"+header_name+"___"+repr(tk.request.headers)+"___"+username)
         if username:
             tk.c.user = username
 
