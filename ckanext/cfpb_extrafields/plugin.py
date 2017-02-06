@@ -533,7 +533,7 @@ class SSOPlugin(p.SingletonPlugin):
 
     def identify(self):
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
-        username = tk.request.headers.get(header_name)
+        username = tk.request.headers.get(header_name, "")
         logging.error("$#$#$#$#$#$#"+header_name+"___"+repr(tk.request.headers)+"___"+username)
         if username:
             tk.c.user = username
