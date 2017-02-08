@@ -537,7 +537,7 @@ class SSOPlugin(p.SingletonPlugin):
         username = tk.request.headers.get(header_name, "")
         logging.error("$#$#$#$#$#$#"+header_name+"___"+repr(tk.request.headers)+"___"+username)
         if username:
-            plyons.session["ckanext-ldap-user"] = username
+            pylons.session["ckanext-ldap-user"] = username
             tk.c.user = username
 
 class ExportPlugin(p.SingletonPlugin):
