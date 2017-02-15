@@ -43,7 +43,7 @@ def strip_semicolon(cell):
 
     We want to strip those characters."""
     def strip(ws):
-        val = ws[cell].value
+        val = strfy(ws[cell].value)
         return val.rstrip("; ")
     return strip
 
