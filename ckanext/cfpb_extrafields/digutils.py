@@ -2,7 +2,8 @@ from openpyxl import load_workbook
 try:
     from ckan.plugins.toolkit import Invalid
 except ImportError: # pragma: no cover
-    #If the custom exception can't be imported, use a more generic exception
+    # If the custom exception can't be imported, use a more generic exception
+    # This happens when ckan is not installed locally, like when running unit tests on travis.
     Invalid = Exception
 
 from ckanext.cfpb_extrafields import validators as v
@@ -10,7 +11,7 @@ from ckanext.cfpb_extrafields import validators as v
 # Helper functions to convert values of sheets
 def strfy(val):
     if isinstance(val, basestring):
-        if val.lower().strip() in ["na", "n/a", "not applicable"]:
+        if val.lower().strip() in ["na", "n/a", "not applicable", "select one"]:
             return ""
         return val.strip()
     else: # pragma: no cover
@@ -36,29 +37,21 @@ def date(cell):
         val = ws[cell].value
         if hasattr(val, "strftime"):
             val = val.strftime("%Y-%m-%d")
-        _ = v.reasonable_date_validator(val)#Make sure it's a valid date, but return the string.
+        _ = v.reasonable_date_validator(val) # Make sure it's a valid date, but return the string.
         return val
     return get_date
 
-def strip_semicolon(cell):
-    """Fields with dropdowns have semicolons/spaces at the end.
-
-    We want to strip those characters."""
-    def strip(ws):
-        val = strfy(ws[cell].value)
-        return val.rstrip("; ")
-    return strip
-
-"""Maps field name to either a cell or a function that's passed the worksheet and should return the value"""
+# Maps field name to either a cell or a function that's passed the worksheet and should return the value
+# Note that some values are currently blank and commented out as they don't map to any fields in the DIG excel sheet
 FIELDS = {
     "access_restrictions": "B17",
     "contact_primary_name": "D7",
     "contact_secondary_name": "B6",
     "data_source_names": "D10",
-    "dataset_notes": "B54",
+    # "dataset_notes": "",
     "dig_id": lambda ws: v.dig_id_validator(strfy(ws["B5"].value)),
     "initial_purpose_for_intake": "H15",
-    "legal_authority_for_collection": strip_semicolon("B25"),
+    "legal_authority_for_collection": "B25",
     "notes": "H4",
     "pra_exclusion": concat(["D38", "B39"]),
     "pra_omb_control_number": lambda ws: v.pra_control_num_validator(strfy(ws["F37"].value)),
@@ -66,11 +59,12 @@ FIELDS = {
     "privacy_contains_pii": "B29",
     "privacy_has_direct_identifiers": "B30",
     "privacy_has_privacy_act_statement": "D30",
-    "privacy_pia_notes": strip_semicolon("B33"),
-    "privacy_pia_title": strip_semicolon("D32"),
+    "privacy_pia_notes": "B33",
+    "privacy_pia_title": "D32",
     "privacy_sorn_number": "D31",
+    "private": lambda ws: True,# Always have new data sources default to private
     "procurement_document_id": "F24",
-    "relevant_governing_documents": strip_semicolon("D24"),
+    "relevant_governing_documents": "D24",
     "sensitivity_level": "B13",
     "title": "B4",
     "transfer_details": "B54",
@@ -78,13 +72,13 @@ FIELDS = {
     "transfer_method": "B48",
     "update_frequency": "F47",
     "usage_restrictions":  concat(["B18", "B19"]),
-    "website_url": "B54",
-    "wiki_link": "B54"#TODO multiple B54 fields?
+    # "website_url": "",
+    # "wiki_link": "",
 }
 
 def get_field(worksheet, field, fields=FIELDS):
     cell_or_func = fields[field]
-    if hasattr(cell_or_func, "__call__"):
+    if callable(cell_or_func):
         return cell_or_func(worksheet)
     else:
         return strfy(worksheet[cell_or_func].value)
