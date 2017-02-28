@@ -537,8 +537,13 @@ class SSOPlugin(p.SingletonPlugin):
         username = tk.request.headers.get(header_name, "")
         logging.error("$#$#$#$#$#$#"+header_name+"___"+repr(tk.request.headers)+"___"+username)
         if username:
-            pylons.session["ckanext-ldap-user"] = username
-            tk.c.user = username
+            # Make sure the user already exists in CKAN.
+            # If not, the user will have to log in normally, which will automatically create their account.
+            # After their account is created, single sign-on will work for them.
+            result = tk.get_action("user_show")({}, {"id": username})
+            if result["success"]:
+                pylons.session["ckanext-ldap-user"] = username
+                tk.c.user = username
 
 class ExportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
