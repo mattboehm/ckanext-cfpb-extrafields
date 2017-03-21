@@ -118,7 +118,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 # send a notification of change by email
 
     def before_create(self, context, resource):
+        logging.debug("BEFORE_CREATE&&&&&&", repr(resource))
         v.combine_roles(resource)
+        logging.debug("BEFORE_CREATE&&&&&&&", repr(resource))
         return
 
     def after_create(self, context, resource):
@@ -129,7 +131,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return
 
     def before_update(self, context, current, resource):
+        logging.debug("BEFORE_UPDATE&&&&&&", repr(resource))
         v.combine_roles(resource)
+        logging.debug("BEFORE_UPDATE&&&&&&&", repr(resource))
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
         if current.get('resource_type', '') == 'Data Dictionary' \
