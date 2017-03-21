@@ -126,6 +126,6 @@ def privacy_pia_notes():
     return ["PIA Published", "No PIA - No PII", "No PIA - Only Employee PII", 
             "No PIA - All PII Aggregated"]
 
+TRANSFER_METHOD = ["Website", "SFTP", "FTP", "Physical Media", "Email", "Connect Direct", "Other"]
 def transfer_method():
-    a=["Website", "SFTP", "FTP", "Physical Media", "Email", "Connect Direct", "Other"]
-    return form_select_format(a)
+    return form_select_format(TRANSFER_METHOD)

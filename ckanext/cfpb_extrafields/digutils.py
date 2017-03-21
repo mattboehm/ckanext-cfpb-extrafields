@@ -7,6 +7,7 @@ except ImportError: # pragma: no cover
     Invalid = Exception
 
 from ckanext.cfpb_extrafields import validators as v
+from ckanext.cfpb_extrafields import options
 
 # Helper functions to convert values of sheets
 def strfy(val):
@@ -57,6 +58,24 @@ def lower(cell):
         return (ws[cell].value or "").lower()
     return get_lower
 
+def normalize(string):
+    return (string or "").lower().strip()
+
+def option(cell, opts, default=""):
+    """Make sure that a cell's value is one of a set of options.
+    This is necessary for cells that are rendered as dropdowns in the Data Catalog
+    Since these dropdowns are case-sensitive, we need to confirm that the case of the
+    cell value matches the case expected by the dropdown"""
+    # Make a map from the normalized options to their actual values
+    option_map = dict((normalize(opt), opt) for opt in opts)
+    def get_option(ws):
+        val = ws[cell].value or ""
+        # Normalize the value and look it up in the map to get the proper casing
+        return option_map.get(normalize(val), default)
+    return get_option
+
+get_transfer_method = option("B48", options.TRANSFER_METHOD, "Other")
+
 # Maps field name to either a cell or a function that's passed the worksheet and should return the value
 # Note that some values are currently blank and commented out as they don't map to any fields in the DIG excel sheet
 FIELDS = {
@@ -85,7 +104,7 @@ FIELDS = {
     "title": "B4",
     "transfer_details": "B54",
     "transfer_initial_size": "B47",
-    "transfer_method": "B48",
+    "transfer_method": get_transfer_method,
     "update_frequency": "F47",
     "usage_restrictions":  concat(["B18", "B19"]),
     # "website_url": "",

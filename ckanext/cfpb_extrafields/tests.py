@@ -226,6 +226,29 @@ class TestImport(unittest.TestCase):
         assert_equal(result, expected)
 
     @parameterized.expand([
+        ("Yes", "Yes", ["Yes", "No"], "Default"),
+        ("Yes", " yes ", ["Yes", "No"], "Default"),
+        ("No", " no ", ["Yes", "No"], "Default"),
+        (" yes ", "Yes", [" yes ", " no "], "Default"),
+        ("Default", "Unknown", ["Yes", "No"], "Default"),
+        ("", "Unknown", ["Yes", "No"], ""),
+        ("No", "Unknown", ["Yes", "No"], "No"),
+    ])
+    def test_option(self, expected, cell_val, options, default):
+        sheet = {"A1": MockCell(cell_val)}
+        result = du.option("A1", options, default)(sheet)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
+        ("sFTP", "SFTP"),
+        ("Unknown", "Other"),
+    ])
+    def test_get_transfer_method(self, cell_val, expected):
+        sheet = {"B48": MockCell(cell_val)}
+        result = du.get_transfer_method(sheet)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
         ("A39", "foo"),
         (lambda x: x["A39"].value.upper(), "FOO"),
     ])
