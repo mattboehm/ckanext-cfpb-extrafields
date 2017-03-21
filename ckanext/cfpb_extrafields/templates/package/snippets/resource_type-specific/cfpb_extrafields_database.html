@@ -51,11 +51,11 @@ X + hidden (required) url
   {% set roles = data.get(db_roles, []) %}
   {% set roles = roles + [("", "")] * 20%}
 
-  {% for num, (role, desc) in enumerate(data.db_roles, 1) %}
+  {% for role, desc in data.db_roles %}
    <div class="db_role{{"" if role else " hdden"}}">
-      {{ form.input('db_role_level_'+str(num), type='text', label=_("Role"),
+      {{ form.input('db_role_level_'+str(loop.index), type='text', label=_("Role"),
       placeholder="", value=role,classes=['control-full']) }}
-      {{ form.input('db_desc_level_'+str(num), type='text', label=_("Description"),
+      {{ form.input('db_desc_level_'+str(loop.index), type='text', label=_("Description"),
       placeholder="", value=desc,classes=['control-full']) }}
     </div>
   {% endfor %}
