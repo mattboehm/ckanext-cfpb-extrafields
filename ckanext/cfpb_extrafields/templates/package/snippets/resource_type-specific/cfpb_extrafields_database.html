@@ -47,6 +47,19 @@ X + hidden (required) url
   <div>
     <p>Roles and access descriptions:</p>
   </div>
+
+  {% set roles = data.get(db_roles, []) %}
+  {% set roles = roles + [("", "")] * 20%}
+
+  {% for num, (role, desc) in enumerate(data.db_roles, 1) %}
+   <div class="db_role{{"" if role else " hdden"}}">
+      {{ form.input('db_role_level_'+str(num), type='text', label=_("Role"),
+      placeholder="", value=role,classes=['control-full']) }}
+      {{ form.input('db_desc_level_'+str(num), type='text', label=_("Description"),
+      placeholder="", value=desc,classes=['control-full']) }}
+    </div>
+  {% endfor %}
+  {#
   {{ form.input('db_role_level_1', type='text', label=_("Level 1"),
   placeholder="", value=data.db_role_level_1,error=errors.db_role_level_1,classes=['control-full']) }}
   {{ form.input('db_role_level_2', type='text', label=_("Level 2"),
@@ -65,6 +78,7 @@ X + hidden (required) url
   placeholder="", value=data.db_role_level_8,error=errors.db_role_level_8,classes=['control-full']) }}
   {{ form.input('db_role_level_9', type='text', label=_("Level 9"),
   placeholder="", value=data.db_role_level_9,error=errors.db_role_level_9,classes=['control-full']) }}
+  #}
   <!-- end cfpb_extrafields_database.html snippet -->
   
 {% elif location=="description" %}

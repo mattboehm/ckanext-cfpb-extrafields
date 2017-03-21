@@ -9,9 +9,14 @@ import validators as v
 import ckanext.cfpb_extrafields.exportutils as eu
 import ckanext.cfpb_extrafields.digutils as du
 
-
+def _add_empty_roles(data, start, stop_inclusive):
+    for num in range(start, stop_inclusive+1):
+        data[v.ROLE_PREFIX + str(num)] = ""
+        data[v.DESC_PREFIX + str(num)] = ""
+    return data
+assert_equal.__self__.maxDiff = None
 class TestValidators(unittest.TestCase):
-
+    maxDiff=None
     @parameterized.expand([
         (u'"asdf","asdf,asdf"',[u'asdf', u'asdf,asdf']),
         (u'asdf',[u'asdf']),
@@ -132,6 +137,26 @@ class TestValidators(unittest.TestCase):
         mi.side_effect = Exception("")
         with self.assertRaises(Exception):
             v.pra_control_num_validator(input)
+
+    @parameterized.expand([
+        ({}, {}),
+        (
+            {"db_role_level_1": "role1", "db_role_level_3": "role_3", "db_desc_level_3": "desc3"},
+            {"db_roles": [("role1", ""), ("role_3", "desc3"), ]}
+        ),
+    ])
+    def test_combine_roles(self, data, expected):
+        assert_equal(v.combine_roles(data), expected)
+
+    @parameterized.expand([
+        ({}, _add_empty_roles({}, 1, 20)),
+        (
+            {"db_roles": [("role1", ""), ("role_3", "desc3"), ]},
+            _add_empty_roles({"db_role_level_1": "role1", "db_desc_level_1": "", "db_role_level_2": "role_3", "db_desc_level_2": "desc3", "db_roles": [("role1", ""), ("role_3", "desc3")]}, 3, 20)
+        ),
+    ])
+    def test_split_roles(self, data, expected):
+        assert_equal(v.split_roles(data), expected)
 
 class TestExport(unittest.TestCase):
     @parameterized.expand([
