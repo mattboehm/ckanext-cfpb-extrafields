@@ -49,7 +49,7 @@ X + hidden (required) url
   </div>
 
   {% set roles = data.get(db_roles, []) %}
-  {% set roles = roles + [("", "")] * 20%}
+  {% set roles = roles + [["", ""] for _ in range(20)] %}
 
   {% for role, desc in roles %}
    <span class="db_role{{"" if role else " hidden"}}">
