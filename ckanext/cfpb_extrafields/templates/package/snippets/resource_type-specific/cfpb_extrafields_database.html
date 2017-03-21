@@ -53,9 +53,9 @@ X + hidden (required) url
 
   {% for role, desc in roles %}
    <div class="db_role{{"" if role else " hdden"}}">
-      {{ form.input('db_role_level_'+str(loop.index), type='text', label=_("Role"),
+      {{ form.input('db_role_level_'+loop.index, type='text', label=_("Role"),
       placeholder="", value=role,classes=['control-full']) }}
-      {{ form.input('db_desc_level_'+str(loop.index), type='text', label=_("Description"),
+      {{ form.input('db_desc_level_'+loop.index, type='text', label=_("Description"),
       placeholder="", value=desc,classes=['control-full']) }}
     </div>
   {% endfor %}
