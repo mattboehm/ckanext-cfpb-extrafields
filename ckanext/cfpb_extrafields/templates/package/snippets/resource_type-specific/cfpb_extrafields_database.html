@@ -59,7 +59,7 @@ X + hidden (required) url
       placeholder="", value=desc,classes=['control-full']) }}
     </span>
   {% endfor %}
-  <button onClick="$('.db_role.hidden:first').removeClass('hidden')">Add Role</button>
+  <button type="button" onClick="$('.db_role.hidden:first').removeClass('hidden')">Add Role</button>
   {#
   {{ form.input('db_role_level_1', type='text', label=_("Level 1"),
   placeholder="", value=data.db_role_level_1,error=errors.db_role_level_1,classes=['control-full']) }}
