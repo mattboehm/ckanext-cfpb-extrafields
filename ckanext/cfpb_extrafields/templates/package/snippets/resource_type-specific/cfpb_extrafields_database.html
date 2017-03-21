@@ -51,7 +51,7 @@ X + hidden (required) url
   {% set roles = data.get(db_roles, []) %}
   {% set roles = roles + [("", "")] * 20%}
 
-  {% for role, desc in data.db_roles %}
+  {% for role, desc in roles %}
    <div class="db_role{{"" if role else " hdden"}}">
       {{ form.input('db_role_level_'+str(loop.index), type='text', label=_("Role"),
       placeholder="", value=role,classes=['control-full']) }}
