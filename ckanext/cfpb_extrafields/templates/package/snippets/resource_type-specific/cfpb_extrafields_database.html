@@ -48,9 +48,8 @@ X + hidden (required) url
     <p>Roles and access descriptions:</p>
   </div>
 
-  {% set roles = data.get("db_roles", []) %}
   {# Add 20 slots for blank rows to be added #}
-  {% set roles = roles + [["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""]] %}
+  {% set roles = data.get("db_roles", []) + [("", "")] * 20 %}
 
   {% for role, desc in roles %}
    <span class="db_role{{"" if role else " hidden"}}">

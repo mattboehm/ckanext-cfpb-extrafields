@@ -123,19 +123,9 @@ DESC_PREFIX = "db_desc_level_"
 def combine_roles(data):
     roles = sorted((key[len(ROLE_PREFIX):], val) for key, val in data.items() if key.startswith(ROLE_PREFIX) and val)
     if roles:
-        data["db_roles"] = [[role, data.get(DESC_PREFIX + num, "")] for num, role in roles]
+        data["db_roles"] = [(role, data.get(DESC_PREFIX + num, "")) for num, role in roles]
 
     items_to_delete = [key for key in data.keys() if key.startswith(ROLE_PREFIX) or key.startswith(DESC_PREFIX)]
     for key in items_to_delete:
         del data[key]
-    return data
-
-def split_roles(data):
-    num = 1
-    roles = data.get("db_roles", [])
-    roles = roles + [("", "")] * (max(20-len(roles), len(roles)))
-    for role, desc in roles:
-        data[ROLE_PREFIX + str(num)] = role
-        data[DESC_PREFIX + str(num)] = desc
-        num += 1
     return data
