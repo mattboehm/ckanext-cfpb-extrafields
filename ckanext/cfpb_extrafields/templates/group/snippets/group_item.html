@@ -1,0 +1,6 @@
+{% ckan_extends %}
+{# Same as regular image, but remove alt tag for 508 compliance #}
+{# Since the alt tag is duplicative of text right next to it, screen readers would end up reading the same text twice in a row. It is better to have an empty alt tag. #}
+{% block image %}
+  <img src="{{ group.image_display_url or h.url_for_static('/base/images/placeholder-group.png') }}" alt="" class="media-image">
+{% endblock %}
