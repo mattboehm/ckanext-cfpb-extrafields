@@ -1,4 +1,7 @@
 from collections import namedtuple
+import logging
+import pprint as pp
+
 from openpyxl import load_workbook
 try:
     from ckan.plugins.toolkit import Invalid
@@ -9,13 +12,23 @@ except ImportError: # pragma: no cover
 
 from ckanext.cfpb_extrafields import validators as v
 
+LOG = logging.getLogger(__name__)
+LOG.setLevel(logging.DEBUG)
+
 Version = namedtuple("Version", "document_version schema_version date")
 def get_versions(workbook):
     versions = []
+    # If there is no dig_id named range, this is a legacy form
+    try:
+        workbook.get_named_range("dig_id")
+    except KeyError:
+        return versions
+    # Some of the early versions of the new form did not have a version history table
+    # They should still be recognized as version 1
     try:
         sheet = workbook["Version History"]
     except KeyError:
-        return versions
+        return [Version(1, 1, None)]
     col = 3
     row = 8
     while sheet.cell(row=row, column=col).value:
@@ -185,10 +198,12 @@ def make_rec_from_sheet(ws, fields):
             result[field] = get_field(ws, field, fields)
         except Invalid as  err:
             errors.append(field + ": " + getattr(err, "error", getattr(err, "message", "UKNOWN_ERROR")))
+    LOG.debug("Result: \n" + pp.pformat(result, indent=4))
     return result, errors
 def make_rec(excel_file):
     wb = load_workbook(excel_file, read_only=True)
     version = get_schema_version(wb)
+    LOG.debug("Schema version: %s", version)
     fields = FIELDS_BY_VERSION[version]
     if version == 0:
         ws = wb.worksheets[0]
